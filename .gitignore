@@ -1,0 +1,14 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Entornos y dependencias
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.env
+
+# IDEs
+.vscode/
+.idea/
