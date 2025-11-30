@@ -1,0 +1,144 @@
+#!/bin/bash
+
+#================================================================================
+#   GESTOR INTEGRAL DE SERVICIOS E INSTALACIONES LINUX
+#================================================================================
+#
+#   Autor:       Marcos Valero Báscones
+#   Descripción: Suite interactiva para la administración automatizada
+#                de servicios, bases de datos y mantenimiento del sistema.
+#   Versión:     2.0 (Edición Portafolio)
+#
+#================================================================================
+
+clear
+
+while true; do
+    echo ""
+    echo "╔═══════════════════════════════════════════════════════════════╗"
+    echo "║             PANEL DE CONTROL - MARCOS VALERO                  ║"
+    echo "╠═══════════════════════════════════════════════════════════════╣"
+    echo "║  [1] Instalar SSH (Secure Shell)                              ║"
+    echo "║  [2] Instalar Servidor Web (Apache2)                          ║"
+    echo "║  [3] Instalar Base de Datos (MySQL)                           ║"
+    echo "║  [4] Instalar PHP + Módulos                                   ║"
+    echo "║  [5] Instalar Servidor FTP (vsftpd)                           ║"
+    echo "╠═══════════════════════════════════════════════════════════════╣"
+    echo "║  [6] Backup Web (/var/www/html)                               ║"
+    echo "║  [7] Backup Bases de Datos (Full Dump)                        ║"
+    echo "║  [8] Actualizar Sistema (Update & Upgrade)                    ║"
+    echo "╠═══════════════════════════════════════════════════════════════╣"
+    echo "║  [9] Apagar Sistema                                           ║"
+    echo "║  [0] Salir                                                    ║"
+    echo "╚═══════════════════════════════════════════════════════════════╝"
+    echo ""
+    read -p "  >> Seleccione una opción [0-9]: " opcion
+    clear
+
+    # Cabecera de ejecución para separar visualmente la acción del menú
+    if [ "$opcion" != "0" ]; then
+        echo "═══════════════════════════════════════════════════════════════"
+        echo "  EJECUTANDO TAREA SELECCIONADA..."
+        echo "═══════════════════════════════════════════════════════════════"
+        echo ""
+    fi
+
+    case $opcion in
+        1)
+            echo ">> Iniciando instalación de SSH..."
+            sudo apt install ssh -y
+            echo ""
+            echo "[OK] Servicio SSH instalado correctamente."
+            echo "---------------------------------------------------------------"
+            read -p "Presione Enter para volver al menú..."
+        ;;
+
+        2)
+            echo ">> Iniciando instalación de Apache2..."
+            sudo apt install apache2 -y
+            echo ""
+            echo "[OK] Apache2 instalado y activo."
+            echo "---------------------------------------------------------------"
+            read -p "Presione Enter para volver al menú..."
+        ;;
+
+        3)
+            echo ">> Iniciando instalación de MySQL Server..."
+            sudo apt install mysql-server -y
+            echo ""
+            echo "[OK] MySQL instalado correctamente."
+            echo "---------------------------------------------------------------"
+            read -p "Presione Enter para volver al menú..."
+        ;;
+
+        4)
+            echo ">> Instalando PHP y librerías necesarias..."
+            sudo apt install php libapache2-mod-php php-mysql -y
+            echo ">> Reiniciando servicio Apache..."
+            sudo systemctl restart apache2
+            echo ""
+            echo "[OK] Entorno PHP configurado correctamente."
+            echo "---------------------------------------------------------------"
+            read -p "Presione Enter para volver al menú..."
+        ;;
+
+        5)
+            echo ">> Instalando servidor FTP (vsftpd)..."
+            sudo apt install vsftpd -y
+            echo ""
+            echo "[OK] Servidor FTP listo para usar."
+            echo "---------------------------------------------------------------"
+            read -p "Presione Enter para volver al menú..."
+        ;;
+
+        6)
+            echo ">> Generando copia de seguridad de /var/www/html..."
+            sudo tar -czf web_backup.tar.gz /var/www/html
+            echo ""
+            echo "[OK] Backup generado: web_backup.tar.gz"
+            echo "---------------------------------------------------------------"
+            read -p "Presione Enter para volver al menú..."
+        ;;
+
+        7)
+            echo ">> Iniciando asistente de Backup MySQL..."
+            read -p "   Usuario MySQL: " user
+            read -s -p "   Contraseña: " pass
+            echo ""
+            echo ">> Exportando bases de datos..."
+            mysqldump -u $user -p$pass --all-databases > backup_mysql.sql
+            echo ""
+            echo "[OK] Dump guardado como: backup_mysql.sql"
+            echo "---------------------------------------------------------------"
+            read -p "Presione Enter para volver al menú..."
+        ;;
+
+        8)
+            echo ">> Actualizando repositorios y paquetes del sistema..."
+            sudo apt update && sudo apt upgrade -y
+            echo ""
+            echo "[OK] Sistema actualizado a la última versión."
+            echo "---------------------------------------------------------------"
+            read -p "Presione Enter para volver al menú..."
+        ;;
+
+        9)
+            echo ">> Procediendo al apagado del sistema..."
+            sudo shutdown now
+        ;;
+
+        0)
+            echo "Gracias por utilizar el gestor de servicios de Marcos Valero."
+            echo "Saliendo..."
+            sleep 1
+            exit 0
+        ;;
+
+        *)
+            echo "[!] Error: Opción no válida."
+            echo "Por favor, seleccione un número del 0 al 9."
+            read -p "Presione Enter para intentar de nuevo..."
+        ;;
+    esac
+    clear
+done
