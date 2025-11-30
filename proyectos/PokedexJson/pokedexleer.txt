@@ -1,0 +1,1 @@
+A continuación, obteniendo los archivos pokedex.json y pokedex.sh, podrá probar la pokedex realizada por mi (marcos), ejecutando de manera simple el archivo .sh
